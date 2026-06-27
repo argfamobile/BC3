@@ -33,9 +33,14 @@ BIP324Cipher::BIP324Cipher(const CKey& key, const EllSwiftPubKey& pubkey) noexce
 
 void BIP324Cipher::Initialize(const EllSwiftPubKey& their_pubkey, bool initiator, bool self_decrypt) noexcept
 {
-    // Determine salt (fixed string + network magic bytes)
+    // Determine salt (fixed string + network magic bytes).
+    // BC3: the salt prefix MUST be "bitcoinIII_v2_shared_secret" (NOT upstream's "bitcoin_...").
+    // The entire BitcoinIII/BC3 network (29.x nodes) derives its BIP324 v2 session keys with this
+    // prefix; using the vanilla "bitcoin_" prefix makes v2 handshakes exchange ellswift keys but
+    // never complete (peers stuck in "detecting", and no v1 fallback because bytes were received).
+    // Do NOT let a future Core rebase silently revert this — it isolates the node from the network.
     const auto& message_header = Params().MessageStart();
-    std::string salt = std::string{"bitcoin_v2_shared_secret"} + std::string(std::begin(message_header), std::end(message_header));
+    std::string salt = std::string{"bitcoinIII_v2_shared_secret"} + std::string(std::begin(message_header), std::end(message_header));
 
     // Perform ECDH to derive shared secret.
     ECDHSecret ecdh_secret = m_key.ComputeBIP324ECDHSecret(their_pubkey, m_our_pubkey, initiator);
