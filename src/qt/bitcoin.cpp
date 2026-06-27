@@ -501,6 +501,15 @@ int GuiMain(int argc, char* argv[])
     QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
 #endif
 
+    // BitcoinIII: por defecto usar el esquema de color claro ("default") en
+    // Windows, independiente del modo oscuro del sistema. El usuario puede
+    // forzar otro modo seteando QT_QPA_PLATFORM (p.ej. windows:darkmode=2).
+#ifdef Q_OS_WIN
+    if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
+        qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
+    }
+#endif
+
     BitcoinApplication app;
     GUIUtil::LoadFont(QStringLiteral(":/fonts/monospace"));
 

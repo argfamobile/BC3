@@ -15,6 +15,10 @@
 #include <map>
 #include <vector>
 
+#ifndef SHA3_VBIT
+#define SHA3_VBIT 0x00001000
+#endif
+
 namespace Consensus {
 
 /**
@@ -107,6 +111,12 @@ struct Params {
     /** Don't warn about unknown BIP 9 activations below this height.
      * This prevents us from warning about the CSV and segwit activations. */
     int MinBIP9WarningHeight;
+    /* SHA3-256t Fork Block Height */
+    int SHA3Height;
+    /* nBits at SHA3-256t Fork Height */
+    uint32_t nBitsSHA3Height;
+    /* Version bit required to be set in all post-fork blocks */
+    int32_t  SHA3VersionBit;
     std::array<BIP9Deployment,MAX_VERSION_BITS_DEPLOYMENTS> vDeployments;
     /** Proof of work parameters */
     uint256 powLimit;

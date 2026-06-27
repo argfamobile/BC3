@@ -2105,6 +2105,17 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     connOptions.nSendBufferMaxSize = 1000 * args.GetIntArg("-maxsendbuffer", DEFAULT_MAXSENDBUFFER);
     connOptions.nReceiveFloodSize = 1000 * args.GetIntArg("-maxreceivebuffer", DEFAULT_MAXRECEIVEBUFFER);
     connOptions.m_added_nodes = args.GetArgs("-addnode");
+    // BitcoinIII: in a young network, seed persistent connections to the
+    // stable relay nodes when the user has not set -addnode/-connect, so a
+    // freshly-installed wallet finds the network without manual setup.
+    // Override-able: any user-provided -addnode/-connect takes precedence.
+    if (connOptions.m_added_nodes.empty() && args.GetArgs("-connect").empty()) {
+        connOptions.m_added_nodes = {
+            "52.206.159.190:38338", "3.126.58.129:38338", "200.82.183.5:38338",
+            "64.176.67.230:38338", "46.7.7.113:38338", "45.142.142.106:38338",
+            "213.181.112.83:38338",
+        };
+    }
     connOptions.nMaxOutboundLimit = *opt_max_upload;
     connOptions.m_peer_connect_timeout = peer_connect_timeout;
     connOptions.whitelist_forcerelay = args.GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY);

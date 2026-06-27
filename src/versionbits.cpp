@@ -275,6 +275,11 @@ static int32_t ComputeBlockVersion(const CBlockIndex* pindexPrev, const Consensu
         }
     }
 
+    if (pindexPrev->nHeight + 1 >= params.SHA3Height)
+        nVersion |=  params.SHA3VersionBit;
+    else
+        nVersion &= ~params.SHA3VersionBit; // assert((nVersion & params.SHA3VersionBit) == 0);
+
     return nVersion;
 }
 

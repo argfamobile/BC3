@@ -46,13 +46,13 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 36
 
-#define QAPP_ORG_NAME "Bitcoin"
-#define QAPP_ORG_DOMAIN "bitcoin.org"
-#define QAPP_APP_NAME_DEFAULT "Bitcoin-Qt"
-#define QAPP_APP_NAME_TESTNET "Bitcoin-Qt-testnet"
-#define QAPP_APP_NAME_TESTNET4 "Bitcoin-Qt-testnet4"
-#define QAPP_APP_NAME_SIGNET "Bitcoin-Qt-signet"
-#define QAPP_APP_NAME_REGTEST "Bitcoin-Qt-regtest"
+#define QAPP_ORG_NAME "BitcoinIII"
+#define QAPP_ORG_DOMAIN "bc3.network"
+#define QAPP_APP_NAME_DEFAULT "BitcoinIII-Qt"
+#define QAPP_APP_NAME_TESTNET "BitcoinIII-Qt-testnet"
+#define QAPP_APP_NAME_TESTNET4 "BitcoinIII-Qt-testnet4"
+#define QAPP_APP_NAME_SIGNET "BitcoinIII-Qt-signet"
+#define QAPP_APP_NAME_REGTEST "BitcoinIII-Qt-regtest"
 
 /* One gigabyte (GB) in bytes */
 static constexpr uint64_t GB_BYTES{1000000000};

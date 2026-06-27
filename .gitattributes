@@ -1,1 +1,2 @@
+* text=auto
 src/clientversion.cpp export-subst
