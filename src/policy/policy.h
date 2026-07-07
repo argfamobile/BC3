@@ -79,8 +79,12 @@ static constexpr unsigned int DEFAULT_DESCENDANT_LIMIT{25};
 static const bool DEFAULT_ACCEPT_DATACARRIER = true;
 /**
  * Default setting for -datacarriersize in vbytes.
+ * BC3: restored to the classic 83-byte limit (OP_RETURN + up to 80 data
+ * bytes) to keep arbitrary data (inscriptions/images) off the BC3 chain.
+ * Upstream Bitcoin Core (v30+) raised this default to
+ * MAX_STANDARD_TX_WEIGHT / WITNESS_SCALE_FACTOR (= 100000 bytes).
  */
-static const unsigned int MAX_OP_RETURN_RELAY = MAX_STANDARD_TX_WEIGHT / WITNESS_SCALE_FACTOR;
+static const unsigned int MAX_OP_RETURN_RELAY = 83;
 /**
  * An extra transaction can be added to a package, as long as it only has one
  * ancestor and is no larger than this. Not really any reason to make this
