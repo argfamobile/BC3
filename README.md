@@ -4,7 +4,7 @@ BitcoinIII Core
 https://bc3.network
 
 For a ready-to-use binary version of the BitcoinIII Core software, see the
-[latest release](https://github.com/argfamobile/BC3/releases/tag/v31.0.0).
+[latest release](https://github.com/argfamobile/BC3/releases/tag/v31.0.2).
 
 What is BitcoinIII?
 -------------------
@@ -20,7 +20,7 @@ BitcoinIII Core connects to the BitcoinIII peer-to-peer network to download and
 fully validate blocks and transactions. It also includes a wallet and a
 graphical interface.
 
-About this release (v31.0.0)
+About this release (v31.0.2)
 ----------------------------
 
 This tree is the BitcoinIII consensus patch **rebased onto [Bitcoin Core
@@ -33,14 +33,22 @@ It was validated by syncing the live BC3 chain across the fork (block 30240,
 SHA-256d -> SHA3-256t) with full validation, and it is 100% interoperable with
 the existing `/Satoshi:29.1.x/` nodes.
 
+**What changed since v31.0.1:** the default for `-datacarriersize` is back to
+**83 bytes**. Bitcoin Core v30 raised it to 100000, which would let arbitrary
+data (inscriptions, images) be relayed and mined onto the BC3 chain. This is
+relay/mempool policy, not consensus -- no fork risk -- but node operators who
+upgrade will stop relaying and mining oversized `OP_RETURN` outputs, which is
+the classic BitcoinIII behaviour and what the 29.x majority of the network
+already enforces. It can still be overridden with `-datacarriersize=<n>`.
+
 Downloads
 ---------
 
-From the [v31.0.0 release](https://github.com/argfamobile/BC3/releases/tag/v31.0.0):
+From the [v31.0.2 release](https://github.com/argfamobile/BC3/releases/tag/v31.0.2):
 
 - **Windows x64** -- native GUI wallet, self-contained and auto-connects to the
-  network out of the box: `BitcoinIII-Core-v31.0.0-x86_64-win64-gui.zip`
-- **Linux x86_64** -- GUI + node + CLI: `BitcoinIII-Core-v31.0.0-x86_64-linux-gnu.tar.gz`
+  network out of the box: `BitcoinIII-Core-v31.0.2-x86_64-win64-gui.zip`
+- **Linux x86_64** -- GUI + node + CLI: `BitcoinIII-Core-v31.0.2-x86_64-linux-gnu.tar.gz`
 
 Verify your download against `SHA512SUMS`. On Linux, the `bitcoinIII-qt` GUI
 needs Qt6 installed; the daemon and CLI are standalone.
@@ -48,8 +56,8 @@ needs Qt6 installed; the daemon and CLI are standalone.
 Building from source
 --------------------
 
-The two commits on top of the Bitcoin Core 31.0 base are the complete,
-auditable BC3 patch. Build instructions are the same as upstream Bitcoin Core --
+The commits on top of the Bitcoin Core 31.0 base are the complete, auditable
+BC3 patch. Build instructions are the same as upstream Bitcoin Core --
 see the [doc folder](doc) (e.g. `doc/build-unix.md`, `doc/build-windows.md`).
 
 License
