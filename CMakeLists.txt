@@ -64,7 +64,10 @@ endif()
 
 set(COPYRIGHT_HOLDERS "The %s developers")
 set(COPYRIGHT_HOLDERS_FINAL "The ${CLIENT_NAME} developers")
-set(CLIENT_BUGREPORT "https://github.com/PinkStarrySky/BitcoinIII-Core/issues")
+# BC3: the binaries we publish are OUR builds - a user hitting a bug in them has to
+# reach our tracker, not the upstream repository's. This shows up in the --help of
+# every binary and in the wallet's About dialog.
+set(CLIENT_BUGREPORT "https://github.com/argfamobile/BC3/issues")
 
 #=============================
 # Language setup

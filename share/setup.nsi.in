@@ -52,7 +52,10 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-InstallDir $PROGRAMFILES64\Bitcoin
+# BC3: upstream installs into plain \Bitcoin, which would overwrite a real Bitcoin
+# Core installation on the same machine. Same directory the upstream
+# BitcoinIII-Core installer uses (checked against its v29.1.1).
+InstallDir $PROGRAMFILES64\BitcoinIII
 CRCCheck force
 XPStyle on
 BrandingText " "
@@ -76,7 +79,10 @@ Section -Main SEC0000
     File @abs_top_builddir@/release/@BITCOIN_WRAPPER_NAME@@EXEEXT@
     File /oname=COPYING.txt @abs_top_srcdir@/COPYING
     File /oname=readme.txt @abs_top_srcdir@/doc/README_windows.txt
-    File @abs_top_srcdir@/share/examples/bitcoin.conf
+    # BC3: installed as bitcoinIII.conf - that is the name bitcoinIII-cli looks for
+    # by default; with the vanilla name the cli cannot find it and fails with
+    # "Could not locate RPC credentials". Same as the upstream BitcoinIII-Core installer.
+    File /oname=bitcoinIII.conf @abs_top_srcdir@/share/examples/bitcoin.conf
     SetOutPath $INSTDIR\share\rpcauth
     File @abs_top_srcdir@/share/rpcauth/*.*
     SetOutPath $INSTDIR\daemon
@@ -84,7 +90,9 @@ Section -Main SEC0000
     File @abs_top_builddir@/release/@BITCOIN_CLI_NAME@@EXEEXT@
     File @abs_top_builddir@/release/@BITCOIN_TX_NAME@@EXEEXT@
     File @abs_top_builddir@/release/@BITCOIN_WALLET_TOOL_NAME@@EXEEXT@
-    File @abs_top_builddir@/release/@BITCOIN_TEST_NAME@@EXEEXT@
+    # BC3: util is added (it ships in our tarballs, the installer did not carry it)
+    # and the test suite upstream bundles is REMOVED - ~28 MB useless to the user.
+    File @abs_top_builddir@/release/@BITCOIN_UTIL_NAME@@EXEEXT@
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd
@@ -110,7 +118,7 @@ Section -post SEC0001
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
     WriteRegStr HKCR "@CLIENT_TARNAME@" "URL Protocol" ""
-    WriteRegStr HKCR "@CLIENT_TARNAME@" "" "URL:Bitcoin"
+    WriteRegStr HKCR "@CLIENT_TARNAME@" "" "URL:BitcoinIII"
     WriteRegStr HKCR "@CLIENT_TARNAME@\DefaultIcon" "" $INSTDIR\@BITCOIN_GUI_NAME@@EXEEXT@
     WriteRegStr HKCR "@CLIENT_TARNAME@\shell\open\command" "" '"$INSTDIR\@BITCOIN_GUI_NAME@@EXEEXT@" "%1"'
 
@@ -147,7 +155,7 @@ Section /o -un.Main UNSEC0000
     Delete /REBOOTOK $INSTDIR\@BITCOIN_GUI_NAME@@EXEEXT@
     Delete /REBOOTOK $INSTDIR\COPYING.txt
     Delete /REBOOTOK $INSTDIR\readme.txt
-    Delete /REBOOTOK $INSTDIR\bitcoin.conf
+    Delete /REBOOTOK $INSTDIR\bitcoinIII.conf
     RMDir /r /REBOOTOK $INSTDIR\share
     RMDir /r /REBOOTOK $INSTDIR\daemon
     DeleteRegValue HKCU "${REGKEY}\Components" Main
